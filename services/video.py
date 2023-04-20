@@ -10,7 +10,7 @@ def open_video(input_path: str):
         video = cv2.VideoCapture(input_path)
     except:
         print(
-            f"Error: could not open '{input_path}'. Please ensure that the file is valid and try again.")
+            f"Error: could not open '{input_path}'. Please ensure that the file path is valid and try again.")
         exit()
 
     return video
