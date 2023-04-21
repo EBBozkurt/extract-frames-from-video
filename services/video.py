@@ -1,29 +1,44 @@
 import cv2
 import os
 import time
-from multiprocessing import Process, queues
 
 
-def open_video(input_path: str):
-    # Open the video file
+def open_video(input_path: str) -> cv2.VideoCapture:
+    """
+    Open a video file from the given input path using OpenCV's VideoCapture function.
+
+    Args:
+        input_path (str): The path of the video file to be opened.
+
+    Returns:
+        cv2.VideoCapture: The VideoCapture object that represents the opened video file.
+    """
     try:
+        # Try to open the video file using OpenCV's VideoCapture function.
         video = cv2.VideoCapture(input_path)
     except:
+        # If there's an error opening the file, print an error message and exit the program.
         print(
             f"Error: could not open '{input_path}'. Please ensure that the file path is valid and try again.")
         exit()
 
+    # Return the VideoCapture object that represents the opened video file.
     return video
 
 
-def extract_frames(video, output_folder_name: str):
-    # Extract Frames..
+def extract_frames(video:  cv2.VideoCapture, output_folder_name: str) -> None:
+    """
+    Extract the frames from the video and save them as image files in the output folder.
+
+    Args:
+        video (cv2.VideoCapture): The input video object.
+        output_folder_name (str): The name of the output folder to store the extracted frames.
+    """
     # Start the timer
     start_time = time.time()
     print('The extracting process has been started... Please wait...')
 
     # Initialize a frame counter
-    # We initialize a frame_count variable to keep track of the number of frames we have processed.
     frame_count = 0
 
     # Loop through the video frames
@@ -37,7 +52,8 @@ def extract_frames(video, output_folder_name: str):
             break
 
         # Save the frame as an image file with a unique name in the output folder
-        file_path = os.path.join(output_folder_name, f'{output_folder_name}_frame_{frame_count}.jpg')
+        file_path = os.path.join(
+            output_folder_name, f'{output_folder_name}_frame_{frame_count}.jpg')
         cv2.imwrite(file_path, frame)
 
         # Increment the frame counter
@@ -50,4 +66,6 @@ def extract_frames(video, output_folder_name: str):
     processing_time = end_time - start_time
     processing_time = "{:.2f}".format(processing_time)
 
-    print(f'The video processed within {processing_time} seconds.')
+    # Print the processing time
+    print(
+        f'The video has been processed. Total frames: {frame_count}. Processing time: {processing_time} seconds.')
