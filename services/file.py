@@ -25,7 +25,7 @@ def get_input_video_path() -> str:
     return input_path
 
 
-def get_output_folder_name() -> str:
+def output_folder_path() -> str:
     """
     Prompt the user to enter the name of the output folder to be created, and return the folder name.
 
