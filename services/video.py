@@ -1,6 +1,9 @@
+import datetime
 import cv2
 import os
 import time
+
+from global_functions.progress_indicator import progress_inditacor
 
 
 def open_video(input_path: str) -> cv2.VideoCapture:
@@ -26,20 +29,24 @@ def open_video(input_path: str) -> cv2.VideoCapture:
     return video
 
 
-def extract_frames(video:  cv2.VideoCapture, output_folder_name: str) -> None:
+def extract_frames(video:  cv2.VideoCapture, output_folder_path: str, content_id: int, starting_frame: int) -> None:
     """
     Extract the frames from the video and save them as image files in the output folder.
 
     Args:
         video (cv2.VideoCapture): The input video object.
-        output_folder_name (str): The name of the output folder to store the extracted frames.
+        output_folder_path (str): The name of the output folder to store the extracted frames.
     """
+
     # Start the timer
     start_time = time.time()
     print('The extracting process has been started... Please wait...')
 
     # Initialize a frame counter
     frame_count = 0
+
+    # Get video total frame count
+    total_frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
 
     # Loop through the video frames
     while True:
@@ -51,10 +58,32 @@ def extract_frames(video:  cv2.VideoCapture, output_folder_name: str) -> None:
         if not ret:
             break
 
-        # Save the frame as an image file with a unique name in the output folder
+        # Start Progress Indicator
+        progress_inditacor(frame_count, total_frame_count, "extract_frames")
+
+        # Get the timestamp of the current frame in milliseconds
+        timestamp = video.get(cv2.CAP_PROP_POS_MSEC)
+
+        # Convert timestamp to a datetime object
+        timestamp_delta = datetime.timedelta(milliseconds=timestamp)
+
+        # Extract hours, minutes, seconds and milliseconds from the delta object
+        hours, remainder = divmod(timestamp_delta.seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        milliseconds = timestamp_delta.microseconds // 1000
+
+        # Format the datetime object as a string in the format "hour-minute-second-millisecond"
+        timestamp_str = f"{hours:02d}-{minutes:02d}-{seconds:02d}-{milliseconds:03d}"
+
+        # Save the frame as an image file with a unique name in the output folder, Ex:
+        # "cid_2_fr_25_ts_00-00-35-023"
+        file_name = f"cid_{content_id}_fr_{frame_count}_ts_{timestamp_str}"
+
         file_path = os.path.join(
-            output_folder_name, f'{output_folder_name}_frame_{frame_count}.jpg')
-        cv2.imwrite(file_path, frame)
+            output_folder_path, f'{file_name}.jpg')
+
+        if (starting_frame <= frame_count):
+            cv2.imwrite(file_path, frame)
 
         # Increment the frame counter
         frame_count += 1
