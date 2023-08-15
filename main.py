@@ -1,4 +1,4 @@
-from services.duplicate import remove_duplicates_similar_frames
+from services.duplicate import remove_duplicate_similar_frames
 from services.file import create_folder, get_input_video_path, get_output_folder_name
 from services.video import extract_frames, open_video
 
@@ -22,4 +22,4 @@ video.release()
 
 
 # Find and remove duplicated and similar frames.
-# duplicate_frames = remove_duplicates_similar_frames(output_folder_path)
+remove_duplicate_similar_frames(output_folder_path)
