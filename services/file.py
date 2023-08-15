@@ -60,3 +60,20 @@ def create_folder(output_folder: str) -> None:
     if not os.path.exists(output_folder):
         # If the output folder does not exist, create it using os.makedirs() function.
         os.makedirs(output_folder)
+
+def read_integer(prompt: str) -> int:
+    """
+    Prompts the user to enter an integer and returns the integer value.
+
+    Args:
+        prompt (str): The prompt to display to the user.
+
+    Returns:
+        int: The integer value entered by the user.
+    """
+    while True:
+        value_str = input(prompt)
+        if value_str.isdigit():
+            return int(value_str)
+        else:
+            print("Invalid input. Please enter an integer value.")
