@@ -28,6 +28,9 @@ extract_frames(video, output_folder_path_string, content_id, starting_frame)
 # Release the video file to free up system resources
 video.release()
 
+# Get the Treshold Value
+treshold_value = read_integer(
+    'Enter a treshold value for finding similar and duplicate images: ')
 
 # Find and remove duplicated and similar frames.
-remove_duplicate_similar_frames(output_folder_path_string)
+remove_duplicate_similar_frames(output_folder_path_string, treshold_value)

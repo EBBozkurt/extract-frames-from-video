@@ -5,7 +5,7 @@ from global_functions.send_to_db import send_frames_to_db
 from models.content_frame_model import ContentFrameIndex
 
 
-def remove_duplicate_similar_frames(folder_path: str):
+def remove_duplicate_similar_frames(folder_path: str, treshold_value: int):
     """
     Delete the duplicate frames in the folder provided
 
@@ -39,7 +39,7 @@ def remove_duplicate_similar_frames(folder_path: str):
         treshold = imagehash.average_hash(
             current_frame)-imagehash.average_hash(master_frame)
 
-        if treshold < 20:
+        if treshold < treshold_value:
 
             # If there is no key with that name
             if not (f"{folder[master_frame_number]}" in similar_locations):
@@ -68,8 +68,8 @@ def remove_duplicate_similar_frames(folder_path: str):
                 ""
             )
 
-            # Append to the list of frames
-            all_frames.append(new_frame)
+            # Append to the list of frames, !! These are not going to DB!!
+            # all_frames.append(new_frame)
 
             # Remove the frame
             os.remove(os.path.join(folder_path, folder[frame_number]))
@@ -91,7 +91,7 @@ def remove_duplicate_similar_frames(folder_path: str):
             # Append to the list of frames
             all_frames.append(new_frame)
 
-            # If treshold value is greater than 20, then set the current frame as master frame
+            # If treshold value is greater than treshold_value, then set the current frame as master frame
             master_frame_number = frame_number
 
             print(
