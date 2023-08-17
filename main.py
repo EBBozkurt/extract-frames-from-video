@@ -1,5 +1,5 @@
 from services.duplicate import remove_duplicate_similar_frames
-from services.file import create_folder, get_input_video_path, output_folder_path,read_integer
+from services.file import create_folder, get_input_video_path, output_folder_path, read_integer
 from services.video import extract_frames, open_video
 
 # Take input video path from user
@@ -9,10 +9,10 @@ input_path = get_input_video_path()
 video = open_video(input_path)
 
 # Get the output folder name from the user
-output_folder_path = output_folder_path()
+output_folder_path_string = output_folder_path()
 
 # Create the output folder if it doesn't exist
-create_folder(output_folder_path)
+create_folder(output_folder_path_string)
 
 # Get the content_id for post request
 content_id = read_integer(
@@ -23,11 +23,11 @@ starting_frame = read_integer(
     'Enter start frame (If you want to start from beginning please enter zero): ')
 
 # Extract Frames..
-extract_frames(video, output_folder_path,content_id,starting_frame)
+extract_frames(video, output_folder_path_string, content_id, starting_frame)
 
 # Release the video file to free up system resources
 video.release()
 
 
 # Find and remove duplicated and similar frames.
-remove_duplicate_similar_frames(output_folder_path)
+remove_duplicate_similar_frames(output_folder_path_string)
