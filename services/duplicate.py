@@ -5,16 +5,18 @@ from global_functions.send_to_db import send_frames_to_db
 from models.content_frame_model import ContentFrameIndex
 
 
-def remove_duplicate_similar_frames(folder_path: str, treshold_value: int):
+def remove_duplicate_similar_frames(desired_folder_path: str, temp_folder_path: str, treshold_value: int):
     """
     Delete the duplicate frames in the folder provided
 
     Keyword arguments:
-    folder_path : Path of the folder contains frames
+    temp_folder_path : Path of the folder contains frames
+    treshold_value: 
+    desired_folder_path: 
     """
 
     # Files list of the folder provided. It is sorted by frame number
-    folder = sorted(os.listdir(folder_path),
+    folder = sorted(os.listdir(temp_folder_path),
                     key=lambda x: int(x.split("_")[3]))
 
     # Master frame that referance for comparison of two frames
@@ -29,11 +31,11 @@ def remove_duplicate_similar_frames(folder_path: str, treshold_value: int):
     for frame_number in range(1, len(folder)):
         # Open the frame file by its location in the list
         current_frame = Image.open(os.path.join(
-            folder_path, folder[frame_number]))
+            temp_folder_path, folder[frame_number]))
 
         # Open the master frame file. Initially first frame of the list.
         master_frame = Image.open(os.path.join(
-            folder_path, folder[master_frame_number]))
+            temp_folder_path, folder[master_frame_number]))
 
         # Calculate treshold value using average_hash difference
         treshold = imagehash.average_hash(
@@ -49,30 +51,18 @@ def remove_duplicate_similar_frames(folder_path: str, treshold_value: int):
 
                 # Append the frame as similar
                 similar_locations[f"{folder[master_frame_number]}"] += (
-                    f"{folder[frame_number].split('')[5].split('.')[0]}")
+                    f"{folder[frame_number].split('_')[5].split('.')[0]}")
 
             else:
                 # If the key exists, append directly
                 similar_locations[f"{folder[master_frame_number]}"] += (
-                    f"|{folder[frame_number].split('')[5].split('.')[0]}")
-
-            print(
-                f"Treshold value is {treshold}. {folder[frame_number]} deleted.")
-
-            # Create new ContentFrameIndex object
-            new_frame = ContentFrameIndex(
-                folder[master_frame_number].split("_")[1],
-                folder[frame_number],
-                folder_path,
-                folder[frame_number].split("_")[5].split(".")[0],
-                ""
-            )
-
-            # Append to the list of frames, !! These are not going to DB!!
-            # all_frames.append(new_frame)
+                    f"|{folder[frame_number].split('_')[5].split('.')[0]}")
 
             # Remove the frame
-            os.remove(os.path.join(folder_path, folder[frame_number]))
+            os.remove(os.path.join(temp_folder_path, folder[frame_number]))
+            
+            print(
+                f"Treshold value is {treshold}. {folder[frame_number]} deleted.")
         else:
             # If there is no key with that name
             if not (f"{folder[master_frame_number]}" in similar_locations):
@@ -83,7 +73,7 @@ def remove_duplicate_similar_frames(folder_path: str, treshold_value: int):
             new_frame = ContentFrameIndex(
                 folder[master_frame_number].split("_")[1].split(".")[0],
                 folder[master_frame_number],
-                folder_path,
+                desired_folder_path,
                 folder[master_frame_number].split("_")[5].split(".")[0],
                 similar_locations[folder[master_frame_number]]
             )

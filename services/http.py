@@ -1,4 +1,3 @@
-# import pip install requestst the requests library for making HTTP requests
 import json
 import requests
 import sys

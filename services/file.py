@@ -1,4 +1,5 @@
 import os
+import shutil
 
 
 def get_input_video_path() -> str:
@@ -25,41 +26,23 @@ def get_input_video_path() -> str:
     return input_path
 
 
-def output_folder_path() -> str:
-    """
-    Prompt the user to enter the name of the output folder to be created, and return the folder name.
-
-    Returns:
-        str: The name of the output folder entered by the user.
-    """
+def get_output_folder_path() -> str:
     while True:
         # Prompt the user to enter the name of the output folder.
-        output_folder_name = input("Enter the name of the output folder: ")
+        output_folder_path = input("Enter the path of the output folder: ")
 
         # Check if the folder name already exists.
-        if not os.path.exists(output_folder_name):
-            # If the folder name does not exist, break out of the loop.
-            break
-        else:
-            # If the folder name already exists, print an error message and continue the loop.
+        if not os.path.exists(output_folder_path):
             print(
-                f"Error: '{output_folder_name}' already exists. Please choose a different name.")
+                f"Error: '{output_folder_path}' is not exists. Please check.")
+            # Clear the wrong given output_folder_path
+            output_folder_path = ""
+        else:
+            break
 
     # Return the output folder name entered by the user.
-    return output_folder_name
+    return output_folder_path
 
-
-def create_folder(output_folder: str) -> None:
-    """
-    Create the output folder if it doesn't exist.
-
-    Args:
-        output_folder (str): The path of the output folder to be created.
-    """
-    # Check if the output folder already exists.
-    if not os.path.exists(output_folder):
-        # If the output folder does not exist, create it using os.makedirs() function.
-        os.makedirs(output_folder)
 
 def read_integer(prompt: str) -> int:
     """
@@ -77,3 +60,10 @@ def read_integer(prompt: str) -> int:
             return int(value_str)
         else:
             print("Invalid input. Please enter an integer value.")
+
+
+def move_extracted_frames(source_dir: str, target_dir: str):
+    file_names = os.listdir(source_dir)
+
+    for file_name in file_names:
+        shutil.move(os.path.join(source_dir, file_name), target_dir)
