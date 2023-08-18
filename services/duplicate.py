@@ -49,12 +49,12 @@ def remove_duplicate_similar_frames(folder_path: str, treshold_value: int):
 
                 # Append the frame as similar
                 similar_locations[f"{folder[master_frame_number]}"] += (
-                    f"{folder[frame_number]}")
+                    f"{folder[frame_number].split('')[5].split('.')[0]}")
 
             else:
                 # If the key exists, append directly
                 similar_locations[f"{folder[master_frame_number]}"] += (
-                    f"|{folder[frame_number]}")
+                    f"|{folder[frame_number].split('')[5].split('.')[0]}")
 
             print(
                 f"Treshold value is {treshold}. {folder[frame_number]} deleted.")
