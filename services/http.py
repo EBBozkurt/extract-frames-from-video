@@ -3,8 +3,8 @@ import requests
 import sys
 
 # TODO: change this URL before using the app
-API_URL = "https://localhost:44365/"
-
+API_URL = "https://dev.p2p.ms/pp/apiTEST/"
+#API_URL = "https://localhost:44365/"
 
 def send_post_request(url: str, data: json) -> str:
     """
