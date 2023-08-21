@@ -1,6 +1,8 @@
+import tempfile
 from services.duplicate import remove_duplicate_similar_frames
-from services.file import create_folder, get_input_video_path, output_folder_path, read_integer
+from services.file import get_input_video_path, get_output_folder_path, move_extracted_frames, read_integer
 from services.video import extract_frames, open_video
+
 
 # Take input video path from user
 input_path = get_input_video_path()
@@ -9,10 +11,7 @@ input_path = get_input_video_path()
 video = open_video(input_path)
 
 # Get the output folder name from the user
-output_folder_path_string = output_folder_path()
-
-# Create the output folder if it doesn't exist
-create_folder(output_folder_path_string)
+output_folder_path = get_output_folder_path()
 
 # Get the content_id for post request
 content_id = read_integer(
@@ -22,15 +21,22 @@ content_id = read_integer(
 starting_frame = read_integer(
     'Enter start frame (If you want to start from beginning please enter zero): ')
 
-# Extract Frames..
-extract_frames(video, output_folder_path_string, content_id, starting_frame)
-
-# Release the video file to free up system resources
-video.release()
-
 # Get the Treshold Value
 treshold_value = read_integer(
     'Enter a treshold value for finding similar and duplicate images: ')
 
-# Find and remove duplicated and similar frames.
-remove_duplicate_similar_frames(output_folder_path_string, treshold_value)
+# In this part, we create a temp folder and after we do our operations in it, we pass it to our real folder that we got from the user.
+with tempfile.TemporaryDirectory() as tmp_dir:
+
+    # Extract Frames..
+    extract_frames(video, tmp_dir, content_id, starting_frame)
+
+    # Release the video file to free up system resources
+    video.release()
+
+    # Find and remove duplicated and similar frames.
+    remove_duplicate_similar_frames(
+        output_folder_path, tmp_dir, treshold_value)
+
+    # At the end of the process, we move the remaining frames to the folder that the user entered.
+    move_extracted_frames(tmp_dir, output_folder_path)
