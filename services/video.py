@@ -4,6 +4,7 @@ import os
 import time
 
 from global_functions.progress_indicator import progress_inditacor
+from global_functions.send_to_db import update_video_resolution
 
 
 def open_video(input_path: str) -> cv2.VideoCapture:
@@ -37,6 +38,8 @@ def extract_frames(video:  cv2.VideoCapture, output_folder_path: str, content_id
         video (cv2.VideoCapture): The input video object.
         output_folder_path (str): The name of the output folder to store the extracted frames.
     """
+
+
 
     # Start the timer
     start_time = time.time()
@@ -98,3 +101,12 @@ def extract_frames(video:  cv2.VideoCapture, output_folder_path: str, content_id
     # Print the processing time
     print(
         f'The video has been processed. Total frames: {frame_count}. Processing time: {processing_time} seconds.')
+    
+    # Update video resolution
+    # Get the resolution (width and height) of the video
+    width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    update_video_resolution(content_id,width,height)
+    # Print the processing time
+    print(
+        f'The video has been updated. Width: {width}. Height: {height}.')
