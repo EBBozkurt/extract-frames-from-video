@@ -2,9 +2,9 @@ import json
 import requests
 import sys
 
-# TODO: change this URL before using the app
-API_URL = "https://dev.p2p.ms/pp/apiTEST/"
-#API_URL = "https://localhost:44365/"
+from global_functions.appConstant import API_URL
+
+
 
 def send_post_request(url: str, data: json) -> str:
     """
@@ -80,3 +80,29 @@ def get_request(url: str):
     except Exception as e:
         print("Exception has occured: ", e)
         sys.exit()
+
+
+def post_request_json_list(url: str, data: dict) -> dict:
+    """
+    Sends a POST request to the specified URL with the provided data and returns JSON response.
+
+    Args:
+        url (str): The URL to send the POST request to.
+        data (dict): The data to include in the POST request.
+
+    Returns:
+        dict: The JSON response if the request was successful, None otherwise.
+    """
+
+    headers = {
+        "Content-Type": "application/json"}
+
+    final_url = API_URL + url
+    try:
+        response = requests.post(final_url, json=data, headers=headers, verify=False)
+        response.raise_for_status()  # Raise an exception for non-200 status codes
+        json_response = response.json()
+        return json_response
+    except requests.exceptions.RequestException as e:
+        print("An error occurred while making the POST request:", str(e))
+        return None
