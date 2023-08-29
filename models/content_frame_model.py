@@ -1,5 +1,6 @@
 import json
 
+
 class ContentFrameIndex:
     CONTENT_ID: int
     FILENAME: str
@@ -13,8 +14,6 @@ class ContentFrameIndex:
         self.FOLDERURL = FOLDERURL
         self.LOCATION = LOCATION
         self.SIMILAR_LOCATIONS = SIMILAR_LOCATIONS
-    
-    
 
 
 class CustomEncoder(json.JSONEncoder):

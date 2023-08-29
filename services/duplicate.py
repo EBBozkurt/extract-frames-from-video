@@ -60,7 +60,7 @@ def remove_duplicate_similar_frames(desired_folder_path: str, temp_folder_path: 
 
             # Remove the frame
             os.remove(os.path.join(temp_folder_path, folder[frame_number]))
-            
+
             print(
                 f"Treshold value is {treshold}. {folder[frame_number]} deleted.")
         else:

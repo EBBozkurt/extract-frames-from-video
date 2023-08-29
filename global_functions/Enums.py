@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class EnumContentRowStates(Enum):
     WaitingForAnalysis = 10
     Splitting = 8

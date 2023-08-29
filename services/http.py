@@ -5,7 +5,6 @@ import sys
 from global_functions.appConstant import API_URL
 
 
-
 def send_post_request(url: str, data: json) -> str:
     """
     Sends a POST request to the specified URL with the provided data.
@@ -99,7 +98,8 @@ def post_request_json_list(url: str, data: dict) -> dict:
 
     final_url = API_URL + url
     try:
-        response = requests.post(final_url, json=data, headers=headers, verify=False)
+        response = requests.post(final_url, json=data,
+                                 headers=headers, verify=False)
         response.raise_for_status()  # Raise an exception for non-200 status codes
         json_response = response.json()
         return json_response

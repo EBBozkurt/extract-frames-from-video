@@ -1,5 +1,6 @@
 import json
 
+
 class Content:
     def __init__(self, ID, PARENT_CONTENT_ID, CONTENT_TYPE_ID, NAME_ORIGINAL, SHORT_INFO_ORIGINAL,
                  ORIGIN_ID, RUN_TIME, RELATED_URL, WIDTH, HEIGHT, OPTIME, rowState):
@@ -15,6 +16,7 @@ class Content:
         self.HEIGHT = HEIGHT
         self.OPTIME = OPTIME
         self.rowState = rowState
+
 
 class CustomEncoder(json.JSONEncoder):
     def default(self, obj):

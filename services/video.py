@@ -39,8 +39,6 @@ def extract_frames(video:  cv2.VideoCapture, output_folder_path: str, content_id
         output_folder_path (str): The name of the output folder to store the extracted frames.
     """
 
-
-
     # Start the timer
     start_time = time.time()
     print('The extracting process has been started... Please wait...')
@@ -101,12 +99,12 @@ def extract_frames(video:  cv2.VideoCapture, output_folder_path: str, content_id
     # Print the processing time
     print(
         f'The video has been processed. Total frames: {frame_count}. Processing time: {processing_time} seconds.')
-    
+
     # Update video resolution
     # Get the resolution (width and height) of the video
     width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    update_video_resolution(content_id,width,height)
+    update_video_resolution(content_id, width, height)
     # Print the processing time
     print(
         f'The video has been updated. Width: {width}. Height: {height}.')
