@@ -58,3 +58,28 @@ def get_content_list_by_content_id(content_id: int):
             content_list.append(content)
 
     return content_list
+
+def get_content_list_by_state(rowState: int):
+    data_to_send = {"rowState": rowState}
+    api_url = "GetContentByState"
+    response_data = post_request_json_list(api_url, data_to_send)
+    content_list = []
+    if response_data:
+        for item in response_data:
+            content = Content(
+                ID=item.get("ID"),
+                PARENT_CONTENT_ID=item.get("PARENT_CONTENT_ID"),
+                CONTENT_TYPE_ID=item.get("CONTENT_TYPE_ID"),
+                NAME_ORIGINAL=item.get("NAME_ORIGINAL"),
+                SHORT_INFO_ORIGINAL=item.get("SHORT_INFO_ORIGINAL"),
+                ORIGIN_ID=item.get("ORIGIN_ID"),
+                RUN_TIME=item.get("RUN_TIME"),
+                RELATED_URL=item.get("RELATED_URL"),
+                WIDTH=item.get("WIDTH"),
+                HEIGHT=item.get("HEIGHT"),
+                OPTIME=item.get("OPTIME"),
+                rowState=item.get("rowState")
+            )
+            content_list.append(content)
+
+    return content_list
